@@ -1,24 +1,24 @@
 {
-    "name": "mijohansen/php-stitch-client",
-    "description": "A Stitch Import API client library for php.",
-    "minimum-stability": "dev",
-    "type": "library",
-    "license": "Apache License Version 2.0",
-    "authors": [
-        {
-            "name": "Michael Johansen",
-            "email": "michael.johansen@gmail.com"
-        }
-    ],
-    "require": {
-        "guzzlehttp/guzzle": "^6.2@dev"
-    },
-    "autoload": {
-        "psr-4": {
-            "Stitch\\": "src"
-        }
-    },
-    "require-dev": {
-        "fzaninotto/faker": "^1.8@dev"
+  "name": "mijohansen/php-stitch-client",
+  "description": "A Stitch Import API client library for php.",
+  "type": "library",
+  "minimum-stability": "dev",
+  "licence": "Apache-2.0",
+  "authors": [
+    {
+      "name": "Michael Johansen",
+      "email": "michael.johansen@gmail.com"
     }
+  ],
+  "require": {
+    "guzzlehttp/guzzle": "^6.2@dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "Stitch\\": "src"
+    }
+  },
+  "require-dev": {
+    "fzaninotto/faker": "^1.8@dev"
+  }
 }
