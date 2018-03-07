@@ -3,7 +3,7 @@
   "description": "A Stitch Import API client library for php.",
   "type": "library",
   "minimum-stability": "dev",
-  "licence": "Apache-2.0",
+  "license": "Apache-2.0",
   "authors": [
     {
       "name": "Michael Johansen",

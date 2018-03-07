@@ -5,12 +5,6 @@ namespace Stitch;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 
-/**
- * Created by PhpStorm.
- * User: michael
- * Date: 19/01/2018
- * Time: 00:03
- */
 class StitchClient {
 
     const DEFAULT_MAX_BATCH_SIZE_BYTES = 4194304;
@@ -18,16 +12,21 @@ class StitchClient {
     const MAX_MESSAGES_PER_BATCH = 20000;
     const DEFAULT_STITCH_URL = 'https://api.stitchdata.com/v2/import/push';
     const DEFAULT_STITCH_URL_ = 'https://api.stitchdata.com/v2/import/validate';
+
     protected $stich_token;
     protected $stich_client_id;
     protected $callback_function;
     protected $target_messages_per_batch = 1000;
     protected $_buffer = [];
 
-    public function __construct($stich_client_id, $stitch_token, $callback_function = null) {
-        $this->stich_client_id = $stich_client_id;
-        $this->stich_token = $stitch_token;
-        $this->callback_function = $callback_function;
+    public function __construct($config) {
+        $this->stich_client_id = $config["client_id"];
+        if (isset($config["token"])) {
+            $this->stich_token = $config["token"];
+        }
+        if (isset($config[".token"])) {
+            $this->stich_token = $config[".token"];
+        }
     }
 
     /**
@@ -56,8 +55,12 @@ class StitchClient {
     }
 
     protected function _send_batch() {
-        $this->_send($this->_buffer);
-        $this->_buffer = [];
+        if(count($this->_buffer)){
+            $this->_send($this->_buffer);
+            $this->_buffer = [];
+        } else {
+            // Warning trying to flush empty buffer.
+        }
     }
 
     public function flush() {
@@ -75,7 +78,6 @@ class StitchClient {
             "Authorization" => "Bearer " . $this->stich_token,
             "Content-Type" => "application/json"
         ];
-        var_dump($this->stich_token);
         $response = $client->post($url, [
             RequestOptions::HEADERS => $headers,
             RequestOptions::JSON => $body

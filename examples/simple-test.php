@@ -10,10 +10,12 @@ use Stitch\StitchClient;
 
 include_once '../vendor/autoload.php';
 
-$client_id = xxx;
-$token = "5f1bdb0869048982820fdbcc62c012a9363ac05ae083b85c1b261fbafbaef753";
 
-$client = new StitchClient($client_id, $token);
+$config = [
+    "client_id" => "1234",
+    "token" => "xxx"
+];
+$client = new StitchClient($config);
 $faker = Faker\Factory::create();
 
 for ($i = 1; $i <= 10; $i++) {
