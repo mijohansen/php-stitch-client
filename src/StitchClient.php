@@ -20,12 +20,12 @@ class StitchClient {
     protected $_buffer = [];
 
     public function __construct($config) {
-        $this->stich_client_id = $config["client_id"];
-        if (isset($config["token"])) {
-            $this->stich_token = $config["token"];
+        $this->stich_client_id = $config["stitch_client"];
+        if (isset($config["stitch_token"])) {
+            $this->stich_token = $config["stitch_token"];
         }
-        if (isset($config[".token"])) {
-            $this->stich_token = $config[".token"];
+        if (isset($config[".stitch_token"])) {
+            $this->stich_token = $config[".stitch_token"];
         }
     }
 
@@ -55,16 +55,17 @@ class StitchClient {
     }
 
     protected function _send_batch() {
-        if(count($this->_buffer)){
-            $this->_send($this->_buffer);
+        if (count($this->_buffer)) {
+            $result = $this->_send($this->_buffer);
             $this->_buffer = [];
         } else {
             // Warning trying to flush empty buffer.
         }
+        return $result;
     }
 
     public function flush() {
-        $this->_send_batch();
+        return $this->_send_batch();
     }
 
     /**
@@ -78,9 +79,10 @@ class StitchClient {
             "Authorization" => "Bearer " . $this->stich_token,
             "Content-Type" => "application/json"
         ];
+        $json_encoded_body = json_encode($body, JSON_PRESERVE_ZERO_FRACTION);
         $response = $client->post($url, [
             RequestOptions::HEADERS => $headers,
-            RequestOptions::JSON => $body
+            RequestOptions::BODY => $json_encoded_body,
         ]);
         return $response;
 
@@ -88,7 +90,8 @@ class StitchClient {
 
     protected function _send($body) {
         $response = $this->_stitch_request($body);
-        print_r($response->getStatusCode());
+        syslog(LOG_INFO, "Stitch request ended with status code:" . $response->getStatusCode());
+        return json_decode($response->getBody()->getContents(),JSON_OBJECT_AS_ARRAY);
         /**
          * check if response is ok... or raise error.
          */
