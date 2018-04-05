@@ -13,6 +13,10 @@ class StitchClient {
     const DEFAULT_STITCH_URL = 'https://api.stitchdata.com/v2/import/push';
     const DEFAULT_STITCH_URL_ = 'https://api.stitchdata.com/v2/import/validate';
 
+    const CONF_CLIENT = "stitch_client";
+    const CONF_TOKEN = "stitch_token";
+
+
     protected $stich_token;
     protected $stich_client_id;
     protected $callback_function;

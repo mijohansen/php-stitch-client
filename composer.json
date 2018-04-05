@@ -2,8 +2,9 @@
   "name": "mijohansen/php-stitch-client",
   "description": "A Stitch Import API client library for php.",
   "type": "library",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "minimum-stability": "dev",
+  "prefer-stable": true,
   "license": "Apache-2.0",
   "authors": [
     {
@@ -12,7 +13,7 @@
     }
   ],
   "require": {
-    "guzzlehttp/guzzle": "^6.2@dev"
+    "guzzlehttp/guzzle": "v6.*"
   },
   "autoload": {
     "psr-4": {
