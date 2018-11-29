@@ -1,0 +1,32 @@
+sudo: false
+language: php
+php:
+- 5.5
+- 7.0
+before_install:
+- phpenv config-rm xdebug.ini
+- composer global require hirak/prestissimo --no-interaction --no-suggest
+install:
+- composer install --prefer-source --no-interaction --dev --ignore-platform-reqs --no-suggest
+script:
+- find ./src -name "*.php" -print0 | xargs -0 -n1 -P8 php -l
+- phpunit
+cache:
+  directories:
+  - vendor
+  - "${HOME}/.cache/composer/files"
+  - "${HOME}/.composer/cache/files"
+jobs:
+  include:
+  - stage: automerge
+    before_script:
+    - git config --global user.name travis-ci[bot]
+    - git config --global user.email travis[bot]@example.com
+    - curl -o automerge.sh https://gist.githubusercontent.com/mijohansen/348f1daab99a8f64f2837330a48f3b15/raw/23767acbaca8f12b4e83fae1fc119e9a9d39c2a8/automerge.sh
+    - chmod a+x automerge.sh
+    script: BRANCHES_TO_MERGE_REGEX='^develop' BRANCH_TO_MERGE_INTO=master ./automerge.sh
+    if: branch = develop
+    php: 7.1
+env:
+  global:
+    secure: XXPGWxTi5ImmeMyh6YevQTajKrQy5DtmVsNuX42Ml6Z3DjSUmkEI5vN060Af3uoDB+1kseQEiuqMAjKhXVoAZTyRcZPeI0azqWWJ+5GFaq0AC+aurD3UObd2hLflmtBLkrSrbfp6lX7DGvdUg60GwkLQlrSQNJZ+MxSkKbpC1HzJFlCyYRtAGUIlpEXLpZHyS+qoISppRcdEHuj1EDAYePyFF+5341eX89N9llYL2gGZf7csB8Udj7KbKJfIfwEliR+VRxRn2ewG2F1/3DPOkcpLyQkdPjkEyOV/609bB3Kd8KTa1600LdQqHtpbOzkztED2TpxEmllwEjTgqscIjQQbf4r+a81HXt/F70YgzuleMyqC8uspA1xTBaC5vL0bYJsYO0CRkw8Ad60bHKC1taKlgeOY/vw09zRTOha3Y5zw/lcNEFIMLHQTYK42cp+TGlEMh/q0vf2i3jGYg9N4xnGPHABoSRa8Q8ajwUvuDw2lXgyTyfD9fYesQb2uY00teDUzT5MgLl77Zyl42QfCgKhOcp9+q3m9xT//0k1TTBDhQlMvosmOAPbZ5Mmmx8SEQ1Nu7yudQXv+JvG+7ymhEihGLdLHu0naqGZdi6Ul7IKMNKT+/wszfXXeN17TWE454uROFsFZDhesg49u6zH/aeLmu1wAcKNwTSw3h8PjBBU=
